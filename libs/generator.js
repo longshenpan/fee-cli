@@ -5,11 +5,11 @@ const Path = require('path');
 
 let env = Yeoman.createEnv();
 
-module.exports = (dirname, template) => {
-	let appname = dirname;
+module.exports = (projectname = 'vueapp', templatename = 'vueappcli') => {
+	let projName = projectname;
 	let inCurrentDir = false;
-	let appCommand = template || 'webapp';
-	let generator = 'generator-' + template;
+	let appCommand = templatename;
+	let generator = 'generator-' + templatename;
 
 	exec('npm root -g', {async: true, silent: true}, (code, stdout) => {
 		let npmRoot = _.trim(stdout);// 使用trim去掉返回值的空白行
@@ -18,7 +18,7 @@ module.exports = (dirname, template) => {
 			// console.log(npmRoot, generatorPath);
 			// require.resolve(generatorPath);
 			env.register(require.resolve(generatorPath), appCommand);
-			env.run(`${appCommand} ${appname} -c`);
+			env.run(`${appCommand} ${projName} -c`);
 			console.log(npmRoot, generatorPath);
 		}catch(e) {
 			console.log(e);
@@ -30,7 +30,7 @@ module.exports = (dirname, template) => {
 					process.exit();
 				}
 				env.register(require.resolve(generatorPath), appCommand);
-				env.run(`${appCommand} ${appname} -c`);
+				env.run(`${appCommand} ${projName} -c`);
 			})
 		}
 		
